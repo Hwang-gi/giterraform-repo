@@ -6,7 +6,7 @@ on:
 env:
   TF_CLOUD_ORGANIZATION: "giterraform-org"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-  TF_WORKSPACE: "terraform-repo"
+  TF_WORKSPACE: "giterraform-repo"
   CONFIG_DIRECTORY: "./"
 
 jobs:
