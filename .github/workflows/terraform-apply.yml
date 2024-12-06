@@ -29,22 +29,13 @@ jobs:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.CONFIG_DIRECTORY }}
 
-      - name: Unlock workspace if locked
-        run: |
-          curl -X PATCH \
-            -H "Authorization: Bearer ${{ secrets.TF_API_TOKEN }}" \
-            -H "Content-Type: application/vnd.api+json" \
-            -d '{"data": {"attributes": {"is_locked": false}}}' \
-            https://app.terraform.io/api/v2/workspaces/${{ env.TF_WORKSPACE }}
-
       - name: Create Apply Run
         uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
         id: apply-run
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
-          is_sqecualtive: true  # speculative 실행을 요청하는 파라미터 추가
-
+          
       - name: Apply
         uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
         if: fromJSON(steps.apply-run.outputs.payload).data.attributes.actions.IsConfirmable
